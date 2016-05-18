@@ -1,0 +1,1 @@
+perform a suspend to ram test via sysfs

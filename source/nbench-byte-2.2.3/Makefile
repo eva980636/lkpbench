@@ -24,7 +24,7 @@ CC = gcc
 # generic options for gcc
 CFLAGS = -s -static -Wall -O3
 
-ifeq ($(TARGET),android)
+ifeq ($(TARGET),android_x86)
 CFLAGS = -s -static -Wall -O3 -m32
 endif
 

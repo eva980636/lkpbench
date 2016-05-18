@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+# PM-QA validation test suite for the power management on Linux
+#
+# Copyright (C) 2011, Linaro Limited.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Contributors:
+#     Daniel Lezcano <daniel.lezcano@linaro.org> (IBM Corporation)
+#       - initial API and implementation
+#
+
+# URL : https://wiki.linaro.org/WorkingGroups/PowerManagement/Resources/TestSuite/PmQaSpecification#cpuhotplug_08
+
+. ../include/functions.sh
+
+randomize() {
+    random=$(od -A n -N 2 -t u2 /dev/urandom)
+    number=$(echo $random % $1)
+
+    if [ $hotplug_allow_cpu0 -eq 0 ]; then
+        number=$(($number + 1))
+    fi
+
+    echo $number
+}
+
+random_stress() {
+    cpu_present=$(cat /sys/devices/system/cpu/present | cut -d '-' -f 2)
+    cpurand=$(randomize $cpu_present)
+
+    # randomize will in range "1-$cpu_present) so cpu0 is ignored
+    set_offline cpu$cpurand
+    ret=$?
+    check "cpu$cpurand is offline" "test $ret -eq 0"
+
+    set_online cpu$cpurand
+    ret=$?
+    check "cpu$cpurand is online" "test $ret -eq 0"
+}
+
+for i in $(seq 1 100); do random_stress ; done
+test_status_show

@@ -12,7 +12,7 @@ DIR2= /test/dir2
 COBJS= fs_mark.o lib_timing.o
 CFLAGS= -O2 -Wall -D_FILE_OFFSET_BITS=64
 
-ifeq ($(TARGET),android)
+ifeq ($(TARGET),android_x86)
 ADDFLAG= -m32
 CFLAGS:= ${CFLAGS} -m32
 endif

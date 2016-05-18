@@ -24,7 +24,7 @@ CFLAGS =  -I../common -DASMx8664 -O1 -fexpensive-optimizations -march=native -mt
 #--> flags for x86-64 without vectorization using daxpy work (use -w 14 -n 500000)
 #CFLAGS =  -I../common -DDAXPY -O1 -ffast-math -funroll-loops -fexpensive-optimizations -march=native -mtune=native -msse4.2 -m64 -malign-double -static
 
-ifeq ($(TARGET),android)
+ifeq ($(TARGET),android_x86)
 CFLAGS := ${CFLAGS} -m32
 endif
 

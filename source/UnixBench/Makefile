@@ -80,7 +80,7 @@ OPTON = -O2 -fomit-frame-pointer -fforce-addr -ffast-math -Wall
 ## generic gcc CFLAGS.  -DTIME must be included.
 CFLAGS = -DTIME -Wall -pedantic -ansi
 
-ifeq ($(TARGET),android)
+ifeq ($(TARGET),android_x86)
 CFLAGS := ${CFLAGS} -m32 -static
 endif
 
